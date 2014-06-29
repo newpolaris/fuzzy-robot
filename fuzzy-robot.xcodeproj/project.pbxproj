@@ -1,0 +1,481 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 46;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		66ED99C0195FF24000535321 /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 66ED99BF195FF24000535321 /* Cocoa.framework */; };
+		66ED99CA195FF24000535321 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 66ED99C8195FF24000535321 /* InfoPlist.strings */; };
+		66ED99CC195FF24000535321 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 66ED99CB195FF24000535321 /* main.m */; };
+		66ED99D0195FF24000535321 /* Credits.rtf in Resources */ = {isa = PBXBuildFile; fileRef = 66ED99CE195FF24000535321 /* Credits.rtf */; };
+		66ED99D3195FF24000535321 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 66ED99D2195FF24000535321 /* AppDelegate.m */; };
+		66ED99D6195FF24000535321 /* MainMenu.xib in Resources */ = {isa = PBXBuildFile; fileRef = 66ED99D4195FF24000535321 /* MainMenu.xib */; };
+		66ED99D8195FF24000535321 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 66ED99D7195FF24000535321 /* Images.xcassets */; };
+		66ED99DF195FF24000535321 /* XCTest.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 66ED99DE195FF24000535321 /* XCTest.framework */; };
+		66ED99E0195FF24000535321 /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 66ED99BF195FF24000535321 /* Cocoa.framework */; };
+		66ED99E8195FF24000535321 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 66ED99E6195FF24000535321 /* InfoPlist.strings */; };
+		66ED99EA195FF24000535321 /* fuzzy_robotTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 66ED99E9195FF24000535321 /* fuzzy_robotTests.m */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		66ED99E1195FF24000535321 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 66ED99B4195FF23F00535321 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 66ED99BB195FF24000535321;
+			remoteInfo = "fuzzy-robot";
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXFileReference section */
+		66ED99BC195FF24000535321 /* fuzzy-robot.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "fuzzy-robot.app"; sourceTree = BUILT_PRODUCTS_DIR; };
+		66ED99BF195FF24000535321 /* Cocoa.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Cocoa.framework; path = System/Library/Frameworks/Cocoa.framework; sourceTree = SDKROOT; };
+		66ED99C2195FF24000535321 /* AppKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AppKit.framework; path = System/Library/Frameworks/AppKit.framework; sourceTree = SDKROOT; };
+		66ED99C3195FF24000535321 /* CoreData.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreData.framework; path = System/Library/Frameworks/CoreData.framework; sourceTree = SDKROOT; };
+		66ED99C4195FF24000535321 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
+		66ED99C7195FF24000535321 /* fuzzy-robot-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "fuzzy-robot-Info.plist"; sourceTree = "<group>"; };
+		66ED99C9195FF24000535321 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
+		66ED99CB195FF24000535321 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
+		66ED99CD195FF24000535321 /* fuzzy-robot-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "fuzzy-robot-Prefix.pch"; sourceTree = "<group>"; };
+		66ED99CF195FF24000535321 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.rtf; name = en; path = en.lproj/Credits.rtf; sourceTree = "<group>"; };
+		66ED99D1195FF24000535321 /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
+		66ED99D2195FF24000535321 /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
+		66ED99D5195FF24000535321 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = Base.lproj/MainMenu.xib; sourceTree = "<group>"; };
+		66ED99D7195FF24000535321 /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
+		66ED99DD195FF24000535321 /* fuzzy-robotTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "fuzzy-robotTests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
+		66ED99DE195FF24000535321 /* XCTest.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = XCTest.framework; path = Library/Frameworks/XCTest.framework; sourceTree = DEVELOPER_DIR; };
+		66ED99E5195FF24000535321 /* fuzzy-robotTests-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "fuzzy-robotTests-Info.plist"; sourceTree = "<group>"; };
+		66ED99E7195FF24000535321 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
+		66ED99E9195FF24000535321 /* fuzzy_robotTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = fuzzy_robotTests.m; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		66ED99B9195FF24000535321 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				66ED99C0195FF24000535321 /* Cocoa.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		66ED99DA195FF24000535321 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				66ED99E0195FF24000535321 /* Cocoa.framework in Frameworks */,
+				66ED99DF195FF24000535321 /* XCTest.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		66ED99B3195FF23F00535321 = {
+			isa = PBXGroup;
+			children = (
+				66ED99C5195FF24000535321 /* fuzzy-robot */,
+				66ED99E3195FF24000535321 /* fuzzy-robotTests */,
+				66ED99BE195FF24000535321 /* Frameworks */,
+				66ED99BD195FF24000535321 /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		66ED99BD195FF24000535321 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				66ED99BC195FF24000535321 /* fuzzy-robot.app */,
+				66ED99DD195FF24000535321 /* fuzzy-robotTests.xctest */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		66ED99BE195FF24000535321 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				66ED99BF195FF24000535321 /* Cocoa.framework */,
+				66ED99DE195FF24000535321 /* XCTest.framework */,
+				66ED99C1195FF24000535321 /* Other Frameworks */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		66ED99C1195FF24000535321 /* Other Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				66ED99C2195FF24000535321 /* AppKit.framework */,
+				66ED99C3195FF24000535321 /* CoreData.framework */,
+				66ED99C4195FF24000535321 /* Foundation.framework */,
+			);
+			name = "Other Frameworks";
+			sourceTree = "<group>";
+		};
+		66ED99C5195FF24000535321 /* fuzzy-robot */ = {
+			isa = PBXGroup;
+			children = (
+				66ED99D1195FF24000535321 /* AppDelegate.h */,
+				66ED99D2195FF24000535321 /* AppDelegate.m */,
+				66ED99D4195FF24000535321 /* MainMenu.xib */,
+				66ED99D7195FF24000535321 /* Images.xcassets */,
+				66ED99C6195FF24000535321 /* Supporting Files */,
+			);
+			path = "fuzzy-robot";
+			sourceTree = "<group>";
+		};
+		66ED99C6195FF24000535321 /* Supporting Files */ = {
+			isa = PBXGroup;
+			children = (
+				66ED99C7195FF24000535321 /* fuzzy-robot-Info.plist */,
+				66ED99C8195FF24000535321 /* InfoPlist.strings */,
+				66ED99CB195FF24000535321 /* main.m */,
+				66ED99CD195FF24000535321 /* fuzzy-robot-Prefix.pch */,
+				66ED99CE195FF24000535321 /* Credits.rtf */,
+			);
+			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+		66ED99E3195FF24000535321 /* fuzzy-robotTests */ = {
+			isa = PBXGroup;
+			children = (
+				66ED99E9195FF24000535321 /* fuzzy_robotTests.m */,
+				66ED99E4195FF24000535321 /* Supporting Files */,
+			);
+			path = "fuzzy-robotTests";
+			sourceTree = "<group>";
+		};
+		66ED99E4195FF24000535321 /* Supporting Files */ = {
+			isa = PBXGroup;
+			children = (
+				66ED99E5195FF24000535321 /* fuzzy-robotTests-Info.plist */,
+				66ED99E6195FF24000535321 /* InfoPlist.strings */,
+			);
+			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		66ED99BB195FF24000535321 /* fuzzy-robot */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 66ED99ED195FF24000535321 /* Build configuration list for PBXNativeTarget "fuzzy-robot" */;
+			buildPhases = (
+				66ED99B8195FF24000535321 /* Sources */,
+				66ED99B9195FF24000535321 /* Frameworks */,
+				66ED99BA195FF24000535321 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = "fuzzy-robot";
+			productName = "fuzzy-robot";
+			productReference = 66ED99BC195FF24000535321 /* fuzzy-robot.app */;
+			productType = "com.apple.product-type.application";
+		};
+		66ED99DC195FF24000535321 /* fuzzy-robotTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 66ED99F0195FF24000535321 /* Build configuration list for PBXNativeTarget "fuzzy-robotTests" */;
+			buildPhases = (
+				66ED99D9195FF24000535321 /* Sources */,
+				66ED99DA195FF24000535321 /* Frameworks */,
+				66ED99DB195FF24000535321 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				66ED99E2195FF24000535321 /* PBXTargetDependency */,
+			);
+			name = "fuzzy-robotTests";
+			productName = "fuzzy-robotTests";
+			productReference = 66ED99DD195FF24000535321 /* fuzzy-robotTests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		66ED99B4195FF23F00535321 /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				LastUpgradeCheck = 0510;
+				ORGANIZATIONNAME = newpolaris;
+				TargetAttributes = {
+					66ED99DC195FF24000535321 = {
+						TestTargetID = 66ED99BB195FF24000535321;
+					};
+				};
+			};
+			buildConfigurationList = 66ED99B7195FF23F00535321 /* Build configuration list for PBXProject "fuzzy-robot" */;
+			compatibilityVersion = "Xcode 3.2";
+			developmentRegion = English;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+				Base,
+			);
+			mainGroup = 66ED99B3195FF23F00535321;
+			productRefGroup = 66ED99BD195FF24000535321 /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				66ED99BB195FF24000535321 /* fuzzy-robot */,
+				66ED99DC195FF24000535321 /* fuzzy-robotTests */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		66ED99BA195FF24000535321 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				66ED99CA195FF24000535321 /* InfoPlist.strings in Resources */,
+				66ED99D8195FF24000535321 /* Images.xcassets in Resources */,
+				66ED99D0195FF24000535321 /* Credits.rtf in Resources */,
+				66ED99D6195FF24000535321 /* MainMenu.xib in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		66ED99DB195FF24000535321 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				66ED99E8195FF24000535321 /* InfoPlist.strings in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		66ED99B8195FF24000535321 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				66ED99D3195FF24000535321 /* AppDelegate.m in Sources */,
+				66ED99CC195FF24000535321 /* main.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		66ED99D9195FF24000535321 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				66ED99EA195FF24000535321 /* fuzzy_robotTests.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		66ED99E2195FF24000535321 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 66ED99BB195FF24000535321 /* fuzzy-robot */;
+			targetProxy = 66ED99E1195FF24000535321 /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
+/* Begin PBXVariantGroup section */
+		66ED99C8195FF24000535321 /* InfoPlist.strings */ = {
+			isa = PBXVariantGroup;
+			children = (
+				66ED99C9195FF24000535321 /* en */,
+			);
+			name = InfoPlist.strings;
+			sourceTree = "<group>";
+		};
+		66ED99CE195FF24000535321 /* Credits.rtf */ = {
+			isa = PBXVariantGroup;
+			children = (
+				66ED99CF195FF24000535321 /* en */,
+			);
+			name = Credits.rtf;
+			sourceTree = "<group>";
+		};
+		66ED99D4195FF24000535321 /* MainMenu.xib */ = {
+			isa = PBXVariantGroup;
+			children = (
+				66ED99D5195FF24000535321 /* Base */,
+			);
+			name = MainMenu.xib;
+			sourceTree = "<group>";
+		};
+		66ED99E6195FF24000535321 /* InfoPlist.strings */ = {
+			isa = PBXVariantGroup;
+			children = (
+				66ED99E7195FF24000535321 /* en */,
+			);
+			name = InfoPlist.strings;
+			sourceTree = "<group>";
+		};
+/* End PBXVariantGroup section */
+
+/* Begin XCBuildConfiguration section */
+		66ED99EB195FF24000535321 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_ENABLE_OBJC_EXCEPTIONS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				MACOSX_DEPLOYMENT_TARGET = 10.9;
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = macosx;
+			};
+			name = Debug;
+		};
+		66ED99EC195FF24000535321 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = YES;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_NS_ASSERTIONS = NO;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_ENABLE_OBJC_EXCEPTIONS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				MACOSX_DEPLOYMENT_TARGET = 10.9;
+				SDKROOT = macosx;
+			};
+			name = Release;
+		};
+		66ED99EE195FF24000535321 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				COMBINE_HIDPI_IMAGES = YES;
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "fuzzy-robot/fuzzy-robot-Prefix.pch";
+				INFOPLIST_FILE = "fuzzy-robot/fuzzy-robot-Info.plist";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				WRAPPER_EXTENSION = app;
+			};
+			name = Debug;
+		};
+		66ED99EF195FF24000535321 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				COMBINE_HIDPI_IMAGES = YES;
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "fuzzy-robot/fuzzy-robot-Prefix.pch";
+				INFOPLIST_FILE = "fuzzy-robot/fuzzy-robot-Info.plist";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				WRAPPER_EXTENSION = app;
+			};
+			name = Release;
+		};
+		66ED99F1195FF24000535321 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(BUILT_PRODUCTS_DIR)/fuzzy-robot.app/Contents/MacOS/fuzzy-robot";
+				COMBINE_HIDPI_IMAGES = YES;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(DEVELOPER_FRAMEWORKS_DIR)",
+					"$(inherited)",
+				);
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "fuzzy-robot/fuzzy-robot-Prefix.pch";
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				INFOPLIST_FILE = "fuzzy-robotTests/fuzzy-robotTests-Info.plist";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				TEST_HOST = "$(BUNDLE_LOADER)";
+				WRAPPER_EXTENSION = xctest;
+			};
+			name = Debug;
+		};
+		66ED99F2195FF24000535321 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(BUILT_PRODUCTS_DIR)/fuzzy-robot.app/Contents/MacOS/fuzzy-robot";
+				COMBINE_HIDPI_IMAGES = YES;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(DEVELOPER_FRAMEWORKS_DIR)",
+					"$(inherited)",
+				);
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "fuzzy-robot/fuzzy-robot-Prefix.pch";
+				INFOPLIST_FILE = "fuzzy-robotTests/fuzzy-robotTests-Info.plist";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				TEST_HOST = "$(BUNDLE_LOADER)";
+				WRAPPER_EXTENSION = xctest;
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		66ED99B7195FF23F00535321 /* Build configuration list for PBXProject "fuzzy-robot" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				66ED99EB195FF24000535321 /* Debug */,
+				66ED99EC195FF24000535321 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		66ED99ED195FF24000535321 /* Build configuration list for PBXNativeTarget "fuzzy-robot" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				66ED99EE195FF24000535321 /* Debug */,
+				66ED99EF195FF24000535321 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+		};
+		66ED99F0195FF24000535321 /* Build configuration list for PBXNativeTarget "fuzzy-robotTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				66ED99F1195FF24000535321 /* Debug */,
+				66ED99F2195FF24000535321 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = 66ED99B4195FF23F00535321 /* Project object */;
+}

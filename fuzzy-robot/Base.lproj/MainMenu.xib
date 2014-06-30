@@ -23,7 +23,6 @@
                 <outlet property="changeFolder" destination="Yew-ge-CGl" id="Iea-N8-d24"/>
                 <outlet property="loginStatus" destination="g4n-G0-cUd" id="gix-Ye-TYk"/>
                 <outlet property="osxAccountsPopupBtn" destination="zxW-Ha-nbF" id="Oou-sf-AgV"/>
-                <outlet property="outFolder" destination="cjz-AI-sDr" id="qMR-gQ-xix"/>
                 <outlet property="outputFolder" destination="cjz-AI-sDr" id="ZcN-bx-rdR"/>
                 <outlet property="saveTwitterObject" destination="5kB-kT-KFR" id="xJF-t9-A5m"/>
                 <outlet property="statusProcess" destination="vSD-hl-cmc" id="hUc-87-ozk"/>
@@ -732,6 +731,9 @@
                             <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
                             <font key="font" metaFont="system"/>
                         </buttonCell>
+                        <connections>
+                            <action selector="setOutFolder:" target="Gos-1e-seo" id="Zu7-Te-ihD"/>
+                        </connections>
                     </button>
                     <button translatesAutoresizingMaskIntoConstraints="NO" id="2VT-8S-5Qj">
                         <rect key="frame" x="27" y="487" width="169" height="18"/>
@@ -883,7 +885,7 @@
                             <font key="font" metaFont="system"/>
                         </buttonCell>
                         <connections>
-                            <action selector="openFolder:" target="Gos-1e-seo" id="dgf-p3-EEb"/>
+                            <action selector="openFolder:" target="Gos-1e-seo" id="fFi-WX-st8"/>
                         </connections>
                     </button>
                     <textField verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="cjz-AI-sDr">
@@ -895,7 +897,7 @@
                             <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
                         </textFieldCell>
                         <connections>
-                            <action selector="setOutFolder:" target="Gos-1e-seo" id="GyQ-ZE-21u"/>
+                            <action selector="newOutFolder:" target="Gos-1e-seo" id="dVI-rt-Ge3"/>
                         </connections>
                     </textField>
                 </subviews>

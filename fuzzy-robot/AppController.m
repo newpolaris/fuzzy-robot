@@ -16,35 +16,50 @@
 
 - (IBAction)newOutFolder:(id)sender {
     BOOL isDir;
-    NSString* folderName = nil; // [outFolder stringValue];
-    if ([[NSFileManager defaultManager] fileExistsAtPath:folderName
-                                             isDirectory:&isDir] && isDir)
-        return;
+    NSString* folderName = [outputFolder stringValue];
+    NSFileManager *fm = [NSFileManager defaultManager];
     
-    if (isDir == NO)
+    BOOL isExist = [fm fileExistsAtPath:folderName isDirectory:&isDir];
+    
+    if (isExist && !isDir)
     {
-        NSAlert* alert = [NSAlert alertWithMessageText:@"입력된 폴더 경로와 일치하는 파일 이름이 존재합니다."
+        NSAlert* alert = [NSAlert alertWithMessageText:@"파일 이름과 폴더이름이 같다니 이럴수가."
                  defaultButton:nil
                  alternateButton:nil
                  otherButton:nil
-                 informativeTextWithFormat:@"File Exist"];
+                 informativeTextWithFormat:@"입력된 폴더 경로와 일치하는 파일 이름이 존재합니다."];
         
         [alert runModal];
         
-        NSString* pictureFolder = [NSHomeDirectory() stringByAppendingPathComponent:@"Picture/"];
-        // [outFolder setStringValue:pictureFolder];
+        NSString* pictureFolder = [NSHomeDirectory() stringByAppendingPathComponent:@"Pictures/"];
+        [outputFolder setStringValue:pictureFolder];
     }
-        
+    else if (!isExist)
+    {
+        NSFileManager *fileManager = [NSFileManager defaultManager];
+        [fileManager createDirectoryAtPath:folderName
+               withIntermediateDirectories:NO
+                                attributes:nil
+                                     error:nil];
+    }
 }
 
 
 - (IBAction)setOutFolder:(id)sender {
+    NSOpenPanel *panel = [NSOpenPanel openPanel];
+    [panel setAllowsMultipleSelection:NO];
+    [panel setCanChooseDirectories:YES];
+    [panel setCanChooseFiles:NO];
+    if ([panel runModal] != NSFileHandlingPanelOKButton) return;
     
+    NSString *folder = [[panel URLs] lastObject];
+    [outputFolder setStringValue:folder];
 }
 
 - (IBAction)openFolder:(id)sender
 {
-    
+    NSURL *folderURL = [NSURL fileURLWithPath: [outputFolder stringValue]];
+    [[NSWorkspace sharedWorkspace] openURL:folderURL];
 }
 
 - (void)twitterLoginTry {
@@ -76,9 +91,6 @@
 }
 
 - (void)awakeFromNib {
-    NSString* pictureFolder = [NSHomeDirectory() stringByAppendingPathComponent:@"Picture/"];
-    [outputFolder setStringValue:pictureFolder];
-    
     self.accountStore = [[ACAccountStore alloc] init];
     ACAccountType *twitterAccountType = [_accountStore accountTypeWithAccountTypeIdentifier:
                                             ACAccountTypeIdentifierTwitter];
@@ -108,6 +120,9 @@
     [_accountStore requestAccessToAccountsWithType:twitterAccountType
                                            options:nil
                                         completion:loginCheck];
+    
+    NSString* pictureFolder = [NSHomeDirectory() stringByAppendingPathComponent:@"Pictures/"];
+    [outputFolder setStringValue:pictureFolder];
 }
 
 

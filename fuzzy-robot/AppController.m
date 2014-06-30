@@ -10,9 +10,41 @@
 
 @implementation AppController
 
-
 - (IBAction)twitterLogin:(id)sender {
     [self twitterLoginTry];
+}
+
+- (IBAction)newOutFolder:(id)sender {
+    BOOL isDir;
+    NSString* folderName = nil; // [outFolder stringValue];
+    if ([[NSFileManager defaultManager] fileExistsAtPath:folderName
+                                             isDirectory:&isDir] && isDir)
+        return;
+    
+    if (isDir == NO)
+    {
+        NSAlert* alert = [NSAlert alertWithMessageText:@"입력된 폴더 경로와 일치하는 파일 이름이 존재합니다."
+                 defaultButton:nil
+                 alternateButton:nil
+                 otherButton:nil
+                 informativeTextWithFormat:@"File Exist"];
+        
+        [alert runModal];
+        
+        NSString* pictureFolder = [NSHomeDirectory() stringByAppendingPathComponent:@"Picture/"];
+        // [outFolder setStringValue:pictureFolder];
+    }
+        
+}
+
+
+- (IBAction)setOutFolder:(id)sender {
+    
+}
+
+- (IBAction)openFolder:(id)sender
+{
+    
 }
 
 - (void)twitterLoginTry {
@@ -44,7 +76,8 @@
 }
 
 - (void)awakeFromNib {
-    [super awakeFromNib];
+    NSString* pictureFolder = [NSHomeDirectory() stringByAppendingPathComponent:@"Picture/"];
+    [outputFolder setStringValue:pictureFolder];
     
     self.accountStore = [[ACAccountStore alloc] init];
     ACAccountType *twitterAccountType = [_accountStore accountTypeWithAccountTypeIdentifier:
@@ -76,6 +109,7 @@
                                            options:nil
                                         completion:loginCheck];
 }
+
 
 
 @end

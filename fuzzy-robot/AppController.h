@@ -20,7 +20,8 @@
 @private
     IBOutlet NSPopUpButton *osxAccountsPopupBtn;
     IBOutlet NSTextField *loginStatus;
-    IBOutlet NSTextField *outFolder;
+    IBOutlet NSTextField *outputFolder;
+    IBOutlet NSButton *openFolder;
     IBOutlet NSButton *changeFolder;
     IBOutlet NSButton *saveTwitterObject;
     IBOutlet NSTextField *statusSummary;
@@ -34,6 +35,10 @@
 @property (nonatomic, strong) ACAccountStore *accountStore;
 
 - (IBAction)twitterLogin:(id)sender;
+- (IBAction)newOutFolder:(id)sender;
+- (IBAction)setOutFolder:(id)sender;
+- (IBAction)openFolder:(id)sender;
+
 - (void)twitterLoginTry;
 
 @end

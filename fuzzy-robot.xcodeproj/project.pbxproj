@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		66537E0C1961A22200EE5CA7 /* AppController.m in Sources */ = {isa = PBXBuildFile; fileRef = 66537E0B1961A22200EE5CA7 /* AppController.m */; };
 		66ED99C0195FF24000535321 /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 66ED99BF195FF24000535321 /* Cocoa.framework */; };
 		66ED99CA195FF24000535321 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 66ED99C8195FF24000535321 /* InfoPlist.strings */; };
 		66ED99CC195FF24000535321 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 66ED99CB195FF24000535321 /* main.m */; };
@@ -46,6 +47,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		66537E0B1961A22200EE5CA7 /* AppController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AppController.m; sourceTree = "<group>"; };
 		66ED99BC195FF24000535321 /* fuzzy-robot.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "fuzzy-robot.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		66ED99BF195FF24000535321 /* Cocoa.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Cocoa.framework; path = System/Library/Frameworks/Cocoa.framework; sourceTree = SDKROOT; };
 		66ED99C2195FF24000535321 /* AppKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AppKit.framework; path = System/Library/Frameworks/AppKit.framework; sourceTree = SDKROOT; };
@@ -95,6 +97,7 @@
 		66ED9A10195FF68C00535321 /* STHTTPRequest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = STHTTPRequest.m; sourceTree = "<group>"; };
 		66ED9A1E195FF6AF00535321 /* Accounts.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Accounts.framework; path = System/Library/Frameworks/Accounts.framework; sourceTree = SDKROOT; };
 		66ED9A20195FF6BB00535321 /* Social.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Social.framework; path = System/Library/Frameworks/Social.framework; sourceTree = SDKROOT; };
+		66ED9A221961A1E200535321 /* AppController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AppController.h; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -167,6 +170,8 @@
 			children = (
 				66ED99D1195FF24000535321 /* AppDelegate.h */,
 				66ED99D2195FF24000535321 /* AppDelegate.m */,
+				66ED9A221961A1E200535321 /* AppController.h */,
+				66537E0B1961A22200EE5CA7 /* AppController.m */,
 				66ED99D4195FF24000535321 /* MainMenu.xib */,
 				66ED99D7195FF24000535321 /* Images.xcassets */,
 				66ED99C6195FF24000535321 /* Supporting Files */,
@@ -361,6 +366,7 @@
 				66ED9A14195FF68C00535321 /* STHTTPRequest+STTwitter.m in Sources */,
 				66ED9A1B195FF68C00535321 /* BAVPlistNode.m in Sources */,
 				66ED9A15195FF68C00535321 /* STTwitterAPI.m in Sources */,
+				66537E0C1961A22200EE5CA7 /* AppController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -575,6 +581,7 @@
 				66ED99EF195FF24000535321 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		66ED99F0195FF24000535321 /* Build configuration list for PBXNativeTarget "fuzzy-robotTests" */ = {
 			isa = XCConfigurationList;
@@ -583,6 +590,7 @@
 				66ED99F2195FF24000535321 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};

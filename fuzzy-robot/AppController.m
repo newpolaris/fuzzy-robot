@@ -64,34 +64,117 @@
 
 - (IBAction)downloadTwitterObject:(id)sender
 {
-    __block BOOL bContinue = YES;
-    __block NSString *tweetCount = @"200";
-    __block NSString *maximumID = nil;
-    
-    void (^fetchFavorite)(NSArray*) = ^(NSArray* statues) {
-        
-        
-        // stop if final place reaches.
-        if (statues.count < [tweetCount integerValue])
-            bContinue = NO;
-    };
-    
-    while (bContinue) {
-        [self.twitter getFavoritesListWithUserID:nil
-                                      screenName:nil
-                                           count:tweetCount
-                                         sinceID:nil
-                                           maxID:maximumID
-                                 includeEntities:@(YES)
-                                    successBlock:fetchFavorite
-                                      errorBlock:^(NSError *error) {
-                                      }];
-    }
-    
+    // TODO:  [downloadTwitterObject setTitle:@"멈춰"];
+    [self downloadTwitterObjectRunner:nil];
 }
 
 - (IBAction)checkUnfavoriteUserId:(id)sender
 {
+    
+}
+
+NSString *descriptionForTarget(NSDictionary *target) {
+    //NSString *timestamp = [target valueForKey:@"created_at"];
+    NSString *targetName = [target valueForKeyPath:@"user.screen_name"];
+    NSString *text = [target valueForKey:@"text"];
+    text = [text stringByReplacingOccurrencesOfString:@"\n" withString:@"\n                                    "];
+    NSString *favouritesCount = [target valueForKey:@"favorite_count"];
+    NSString *retweetsCount = [target valueForKey:@"retweet_count"];
+    NSString *idString = [target valueForKey:@"id_str"];
+    
+    return [NSString stringWithFormat:@"%@\t[F %@] [R %@]\t@%@\t%@", idString, favouritesCount, retweetsCount, targetName, text];
+}
+
+NSString *descriptionForFavorites(NSArray *favorites) {
+    
+    NSMutableString *ms = [NSMutableString string];
+    
+    NSUInteger numberOfFavorites = 0;
+    
+    for(NSDictionary *d in favorites) {
+        [ms appendString:@"----------\n"];
+        
+        NSString *timestamp = [d valueForKey:@"created_at"];
+        
+        for(NSDictionary *source in [d valueForKey:@"sources"]) {
+            NSString *sourceName = [source valueForKey:@"screen_name"];
+            
+            [ms appendFormat:@"%@ @%@ favorited:\n", timestamp, sourceName];
+        }
+        
+        NSArray *targets = [d valueForKey:@"targets"];
+        
+        numberOfFavorites += [targets count];
+        
+        for(NSDictionary *target in targets) {
+            
+            NSString *targetDescription = descriptionForTarget(target);
+            
+            [ms appendFormat:@"%@\n", targetDescription];
+        }
+    }
+    
+    return ms;
+}
+
+#if 0
+    // TODO: screen name
+    NSArray *favorites = [statues filteredArrayUsingPredicate:[NSPredicate predicateWithBlock:^BOOL(id evaluatedObject, NSDictionary *bindings) {
+        NSDictionary *d = (NSDictionary *)evaluatedObject;
+        return [[d valueForKey:@"action"] isEqualToString:@"favorite"];
+    }]];
+
+    NSString *timestamp = [d valueForKey:@"created_at"];
+    NSUInteger index = [array indexOfObject:max];
+#endif
+
+- (void)downloadTwitterObjectRunner:(NSString*)maximumID
+{
+    NSString *tweetCount = @"200";
+    
+    void (^fetchTweets)(NSArray*) = ^(NSArray* favorites) {
+        for (NSDictionary *dic in favorites) {
+            NSDictionary *medias = dic[@"extended_entities"][@"media"];
+            for (NSDictionary *media in medias)
+            {
+                NSURL *uri = media[@"media_url"];
+                NSLog(@"%@", uri);
+                NSData *data = [NSData dataWithContentsOfURL:uri options:NSDataReadingUncached error:nil];
+            }
+        }
+        
+    };
+    
+    
+    void (^fetchFavorite)(NSArray*) = ^(NSArray* statues) {
+        // stop if final place reaches.
+        // BUG_FIX: 그냥 막 0 개 들어오네?
+        if (statues.count != 0 && statues.count < [tweetCount integerValue])
+        {
+            NSLog(@"Finished!");
+        }
+        else
+        {
+            fetchTweets(statues);
+            
+            NSArray *ids = [statues valueForKeyPath:@"id"];
+            NSString *maxID = [[ids valueForKeyPath:@"@max.intValue"] stringValue];
+            
+            dispatch_async(dispatch_get_main_queue(), ^{
+                [self downloadTwitterObjectRunner:maxID];
+            });
+        }
+    };
+    
+    [self.twitter getFavoritesListWithUserID:nil
+                                  screenName:nil
+                                       count:tweetCount
+                                     sinceID:nil
+                                       maxID:maximumID
+                             includeEntities:@(YES)
+                                successBlock:fetchFavorite
+                                  errorBlock:^(NSError *error) {
+                                  }];
 }
 
 - (void)twitterLoginTry {

@@ -21,9 +21,8 @@
     IBOutlet NSPopUpButton *osxAccountsPopupBtn;
     IBOutlet NSTextField *loginStatus;
     IBOutlet NSTextField *outputFolder;
-    IBOutlet NSButton *openFolder;
     IBOutlet NSButton *changeFolder;
-    IBOutlet NSButton *saveTwitterObject;
+    IBOutlet NSButton *downloadTwitterObject;
     IBOutlet NSTextField *statusSummary;
     IBOutlet NSTextField *statusProcess;
     IBOutlet NSTextField *unfavoritedUsersID;

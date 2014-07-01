@@ -21,10 +21,10 @@
         <customObject id="Gos-1e-seo" userLabel="AppController" customClass="AppController">
             <connections>
                 <outlet property="changeFolder" destination="Yew-ge-CGl" id="Iea-N8-d24"/>
+                <outlet property="downloadTwitterObject" destination="5kB-kT-KFR" id="tH8-Qq-bbP"/>
                 <outlet property="loginStatus" destination="g4n-G0-cUd" id="gix-Ye-TYk"/>
                 <outlet property="osxAccountsPopupBtn" destination="zxW-Ha-nbF" id="Oou-sf-AgV"/>
                 <outlet property="outputFolder" destination="cjz-AI-sDr" id="ZcN-bx-rdR"/>
-                <outlet property="saveTwitterObject" destination="5kB-kT-KFR" id="xJF-t9-A5m"/>
                 <outlet property="statusProcess" destination="vSD-hl-cmc" id="hUc-87-ozk"/>
                 <outlet property="statusSummary" destination="EEX-OV-VQy" id="RZx-7a-CDh"/>
                 <outlet property="unfavoritedUsersID" destination="Xrm-bZ-fyN" id="AKe-RV-fo3"/>
@@ -753,6 +753,9 @@
                             <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
                             <font key="font" metaFont="system"/>
                         </buttonCell>
+                        <connections>
+                            <action selector="downloadTwitterObject:" target="Gos-1e-seo" id="Dm7-CG-SqF"/>
+                        </connections>
                     </button>
                     <popUpButton verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="Dvk-0b-Sfz">
                         <rect key="frame" x="383" y="449" width="106" height="26"/>

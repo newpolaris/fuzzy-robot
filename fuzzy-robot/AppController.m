@@ -14,7 +14,7 @@
     [self twitterLoginTry];
 }
 
-- (IBAction)newOutFolder:(id)sender {
+- (IBAction)checkOutFolder:(id)sender {
     BOOL isDir;
     NSString* folderName = [outputFolder stringValue];
     NSFileManager *fm = [NSFileManager defaultManager];
@@ -60,6 +60,38 @@
 {
     NSURL *folderURL = [NSURL fileURLWithPath: [outputFolder stringValue]];
     [[NSWorkspace sharedWorkspace] openURL:folderURL];
+}
+
+- (IBAction)downloadTwitterObject:(id)sender
+{
+    __block BOOL bContinue = YES;
+    __block NSString *tweetCount = @"200";
+    __block NSString *maximumID = nil;
+    
+    void (^fetchFavorite)(NSArray*) = ^(NSArray* statues) {
+        
+        
+        // stop if final place reaches.
+        if (statues.count < [tweetCount integerValue])
+            bContinue = NO;
+    };
+    
+    while (bContinue) {
+        [self.twitter getFavoritesListWithUserID:nil
+                                      screenName:nil
+                                           count:tweetCount
+                                         sinceID:nil
+                                           maxID:maximumID
+                                 includeEntities:@(YES)
+                                    successBlock:fetchFavorite
+                                      errorBlock:^(NSError *error) {
+                                      }];
+    }
+    
+}
+
+- (IBAction)checkUnfavoriteUserId:(id)sender
+{
 }
 
 - (void)twitterLoginTry {

@@ -897,7 +897,7 @@
                             <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
                         </textFieldCell>
                         <connections>
-                            <action selector="newOutFolder:" target="Gos-1e-seo" id="dVI-rt-Ge3"/>
+                            <action selector="checkOutFolder:" target="Gos-1e-seo" id="Jpb-oZ-8p8"/>
                         </connections>
                     </textField>
                 </subviews>

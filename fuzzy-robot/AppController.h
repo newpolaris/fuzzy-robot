@@ -35,9 +35,11 @@
 @property (nonatomic, strong) ACAccountStore *accountStore;
 
 - (IBAction)twitterLogin:(id)sender;
-- (IBAction)newOutFolder:(id)sender;
+- (IBAction)checkOutFolder:(id)sender;
 - (IBAction)setOutFolder:(id)sender;
 - (IBAction)openFolder:(id)sender;
+- (IBAction)downloadTwitterObject:(id)sender;
+- (IBAction)checkUnfavoriteUserId:(id)sender;
 
 - (void)twitterLoginTry;
 

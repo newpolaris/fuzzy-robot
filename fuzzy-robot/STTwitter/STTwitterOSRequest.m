@@ -62,7 +62,7 @@ typedef void (^upload_progress_block_t)(NSInteger bytesWritten, NSInteger totalB
 }
 
 - (NSURLConnection *)startRequest {
-    
+    @autoreleasepool {
     NSString *postDataKey = [_params valueForKey:kSTPOSTDataKey];
     NSString *postDataFilename = [_params valueForKey:kSTPOSTMediaFileNameKey];
     NSData *mediaData = [_params valueForKey:postDataKey];
@@ -113,10 +113,11 @@ typedef void (^upload_progress_block_t)(NSInteger bytesWritten, NSInteger totalB
     NSURLConnection *connection = [NSURLConnection connectionWithRequest:preparedURLRequest delegate:self];
     [connection start];
     return connection;
+    }
 }
 
 - (NSDictionary *)requestHeadersForRequest:(id)request {
-    
+    @autoreleasepool {
     if([request isKindOfClass:[NSURLRequest class]]) {
         return [request allHTTPHeaderFields];
     }
@@ -130,10 +131,11 @@ typedef void (^upload_progress_block_t)(NSInteger bytesWritten, NSInteger totalB
 #else
     return [[request preparedURLRequest] allHTTPHeaderFields];
 #endif
+    }
 }
 
 - (void)handleStreamingResponse:(NSHTTPURLResponse *)urlResponse request:(id)request data:(NSData *)responseData {
-    
+    @autoreleasepool {
     if(responseData == nil) {
         self.errorBlock(request, [self requestHeadersForRequest:request], [urlResponse allHeaderFields], nil);
         return;
@@ -162,6 +164,7 @@ typedef void (^upload_progress_block_t)(NSInteger bytesWritten, NSInteger totalB
     NSArray *jsonChunks = [jsonString componentsSeparatedByString:@"\r\n"];
     
     for(NSString *jsonChunk in jsonChunks) {
+        @autoreleasepool {
         if([jsonChunk length] == 0) continue;
         NSData *data = [jsonChunk dataUsingEncoding:NSUTF8StringEncoding];
         NSError *jsonError = nil;
@@ -169,8 +172,9 @@ typedef void (^upload_progress_block_t)(NSInteger bytesWritten, NSInteger totalB
         if(json) {
             self.completionBlock(request, [self requestHeadersForRequest:request], [urlResponse allHeaderFields], json);
         }
+        }
     }
-
+    }
 }
 
 #pragma mark NSURLConnectionDataDelegate
@@ -196,16 +200,17 @@ typedef void (^upload_progress_block_t)(NSInteger bytesWritten, NSInteger totalB
 }
 
 - (void)connection:(NSURLConnection *)connection didFailWithError:(NSError *)error {
-    
+    @autoreleasepool {
     NSURLRequest *request = [connection currentRequest];
     NSDictionary *requestHeaders = [request allHTTPHeaderFields];
     NSDictionary *responseHeaders = [_httpURLResponse allHeaderFields];
     
     self.errorBlock(request, requestHeaders, responseHeaders, error);
+    }
 }
 
 - (void)connectionDidFinishLoading:(NSURLConnection *)connection {
-    
+    @autoreleasepool {
     NSURLRequest *request = [connection currentRequest];
     
     if(_data == nil) {
@@ -234,15 +239,17 @@ typedef void (^upload_progress_block_t)(NSInteger bytesWritten, NSInteger totalB
     } else {
         self.errorBlock(request, [self requestHeadersForRequest:request], [_httpURLResponse allHeaderFields], jsonError);
     }
-    
+    }
 }
 
 - (void)connection:(NSURLConnection *)connection
    didSendBodyData:(NSInteger)bytesWritten
  totalBytesWritten:(NSInteger)totalBytesWritten
 totalBytesExpectedToWrite:(NSInteger)totalBytesExpectedToWrite {
+    @autoreleasepool {
     if(self.uploadProgressBlock == nil) return;
     self.uploadProgressBlock(bytesWritten, totalBytesWritten, totalBytesExpectedToWrite);
+    }
 }
 
 @end

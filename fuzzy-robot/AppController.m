@@ -64,8 +64,10 @@
 
 - (IBAction)downloadTwitterObject:(id)sender
 {
+    @autoreleasepool {
     // TODO:  [downloadTwitterObject setTitle:@"멈춰"];
     [self downloadTwitterObjectRunner:nil];
+    }
 }
 
 - (IBAction)checkUnfavoriteUserId:(id)sender
@@ -126,6 +128,8 @@ NSString *descriptionForFavorites(NSArray *favorites) {
 
     NSString *timestamp = [d valueForKey:@"created_at"];
     NSUInteger index = [array indexOfObject:max];
+
+    // 총 트윗, 한것, 남은것으로 시간 개수 표시:
 #endif
 
 - (void)downloadTwitterObjectRunner:(NSString*)maximumID
@@ -134,17 +138,33 @@ NSString *descriptionForFavorites(NSArray *favorites) {
     
     void (^fetchTweets)(NSArray*) = ^(NSArray* favorites) {
         for (NSDictionary *dic in favorites) {
-            NSDictionary *medias = dic[@"extended_entities"][@"media"];
-            for (NSDictionary *media in medias)
-            {
-                NSURL *uri = media[@"media_url"];
-                NSLog(@"%@", uri);
-                NSData *data = [NSData dataWithContentsOfURL:uri options:NSDataReadingUncached error:nil];
+            @autoreleasepool {
+                NSDictionary *medias = dic[@"extended_entities"][@"media"];
+                NSDictionary *urls = dic[@"entities"][@"urls"];
+                
+                if (medias != nil)
+                {
+                    for (NSDictionary *media in medias)
+                    {
+                        NSURL *uri = [NSURL URLWithString:[media[@"media_url"] stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding]];
+                        NSLog(@"%@", uri);
+                        NSString *name = [uri lastPathComponent];
+                        NSURL *largeImageUri = [NSURL URLWithString:[NSString stringWithFormat:@"%@%@", uri, @":orig"]];
+                        NSData *data = [NSData dataWithContentsOfURL:largeImageUri options:NSDataReadingUncached error:nil];
+                        [data writeToFile:name atomically:YES];
+                    }
+                }
+                else if (urls != nil)
+                {
+                    for (NSDictionary *url in urls)
+                    {
+                        NSString *uri = url[@"expanded_url"];
+                        if (uri == nil) continue;
+                    }
+                }
             }
         }
-        
     };
-    
     
     void (^fetchFavorite)(NSArray*) = ^(NSArray* statues) {
         // stop if final place reaches.
@@ -174,6 +194,16 @@ NSString *descriptionForFavorites(NSArray *favorites) {
                              includeEntities:@(YES)
                                 successBlock:fetchFavorite
                                   errorBlock:^(NSError *error) {
+                                      NSLog(@"%@", [error debugDescription]);
+                                      if ([error code] == 88)
+                                      {
+                                          NSLog(@"API Limit에 걸렸습니다. 5분 후에 재시도 합니다.");
+                                          dispatch_after(dispatch_time(DISPATCH_TIME_NOW,
+                                                                       (int64_t)(60 * 5 * NSEC_PER_SEC)),
+                                                         dispatch_get_main_queue(), ^{
+                                                             [self downloadTwitterObjectRunner:maximumID];
+                                                         });
+                                      }
                                   }];
 }
 

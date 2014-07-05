@@ -7,6 +7,7 @@
 //
 
 #import "AppController.h"
+#import "TFHpple.h"
 
 @implementation AppController
 
@@ -114,6 +115,8 @@ NSString *descriptionForFavorites(NSArray *favorites) {
             
             [ms appendFormat:@"%@\n", targetDescription];
         }
+        
+        
     }
     
     return ms;
@@ -136,22 +139,25 @@ NSString *descriptionForFavorites(NSArray *favorites) {
 {
     NSString *tweetCount = @"200";
     
+    
     void (^fetchTweets)(NSArray*) = ^(NSArray* favorites) {
         for (NSDictionary *dic in favorites) {
             @autoreleasepool {
                 NSDictionary *medias = dic[@"extended_entities"][@"media"];
                 NSDictionary *urls = dic[@"entities"][@"urls"];
                 
+                NSMutableArray *uriArr = [[NSMutableArray alloc] init];
+                NSMutableArray *nameArr = [[NSMutableArray alloc] init];
+                
                 if (medias != nil)
                 {
                     for (NSDictionary *media in medias)
                     {
                         NSURL *uri = [NSURL URLWithString:[media[@"media_url"] stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding]];
-                        NSLog(@"%@", uri);
-                        NSString *name = [uri lastPathComponent];
                         NSURL *largeImageUri = [NSURL URLWithString:[NSString stringWithFormat:@"%@%@", uri, @":orig"]];
-                        NSData *data = [NSData dataWithContentsOfURL:largeImageUri options:NSDataReadingUncached error:nil];
-                        [data writeToFile:name atomically:YES];
+                        
+                        [nameArr addObject:[uri lastPathComponent]];
+                        [uriArr addObject:largeImageUri];
                     }
                 }
                 else if (urls != nil)
@@ -160,8 +166,38 @@ NSString *descriptionForFavorites(NSArray *favorites) {
                     {
                         NSString *uri = url[@"expanded_url"];
                         if (uri == nil) continue;
+                        if ([uri rangeOfString:@"twitter.com"].length == 0) continue;
+
+                        NSURL *url = [NSURL URLWithString:[NSString stringWithFormat:@"%@", uri]];
+                        NSData *data = [NSData dataWithContentsOfURL:url options:NSDataReadingUncached error:nil];
+                        TFHpple *parser = [[TFHpple alloc] initWithHTMLData:data];
+                        NSArray *elements = [parser searchWithXPathQuery:@"//source[@class='source-mp4']"];
+                        
+                        for (TFHppleElement *link in elements)
+                        {
+                            NSString *mp4link = [link objectForKey:@"video-src"];
+                            if (mp4link == nil) continue;
+                            NSURL *mp4uri = [NSURL URLWithString:[NSString stringWithFormat:@"%@", mp4link]];
+                                             
+                            [nameArr addObject:[mp4uri lastPathComponent]];
+                            [uriArr addObject:mp4uri];
+                        }
                     }
                 }
+                
+                if (uriArr.count == 0) continue;
+                for (int i = 0; i < uriArr.count; i++)
+                {
+                    @autoreleasepool {
+                        NSString *name = nameArr[i];
+                        NSURL *uri = uriArr[i];
+                        NSData *data = [NSData dataWithContentsOfURL:uri options:NSDataReadingUncached error:nil];
+                        [data writeToFile:name atomically:YES];
+                    }
+                }
+                
+                
+                
             }
         }
     };

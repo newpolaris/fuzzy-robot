@@ -8,6 +8,10 @@
 
 /* Begin PBXBuildFile section */
 		66537E0C1961A22200EE5CA7 /* AppController.m in Sources */ = {isa = PBXBuildFile; fileRef = 66537E0B1961A22200EE5CA7 /* AppController.m */; };
+		66537E631968134E00EE5CA7 /* TFHpple.m in Sources */ = {isa = PBXBuildFile; fileRef = 66537E5D1968134E00EE5CA7 /* TFHpple.m */; };
+		66537E641968134E00EE5CA7 /* TFHppleElement.m in Sources */ = {isa = PBXBuildFile; fileRef = 66537E5F1968134E00EE5CA7 /* TFHppleElement.m */; };
+		66537E651968134E00EE5CA7 /* XPathQuery.m in Sources */ = {isa = PBXBuildFile; fileRef = 66537E621968134E00EE5CA7 /* XPathQuery.m */; };
+		66537E671968135B00EE5CA7 /* libxml2.2.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 66537E661968135B00EE5CA7 /* libxml2.2.dylib */; };
 		66ED99C0195FF24000535321 /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 66ED99BF195FF24000535321 /* Cocoa.framework */; };
 		66ED99CA195FF24000535321 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 66ED99C8195FF24000535321 /* InfoPlist.strings */; };
 		66ED99CC195FF24000535321 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 66ED99CB195FF24000535321 /* main.m */; };
@@ -48,6 +52,13 @@
 
 /* Begin PBXFileReference section */
 		66537E0B1961A22200EE5CA7 /* AppController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AppController.m; sourceTree = "<group>"; };
+		66537E5C1968134E00EE5CA7 /* TFHpple.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TFHpple.h; sourceTree = "<group>"; };
+		66537E5D1968134E00EE5CA7 /* TFHpple.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TFHpple.m; sourceTree = "<group>"; };
+		66537E5E1968134E00EE5CA7 /* TFHppleElement.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TFHppleElement.h; sourceTree = "<group>"; };
+		66537E5F1968134E00EE5CA7 /* TFHppleElement.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TFHppleElement.m; sourceTree = "<group>"; };
+		66537E611968134E00EE5CA7 /* XPathQuery.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = XPathQuery.h; sourceTree = "<group>"; };
+		66537E621968134E00EE5CA7 /* XPathQuery.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = XPathQuery.m; sourceTree = "<group>"; };
+		66537E661968135B00EE5CA7 /* libxml2.2.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libxml2.2.dylib; path = usr/lib/libxml2.2.dylib; sourceTree = SDKROOT; };
 		66ED99BC195FF24000535321 /* fuzzy-robot.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "fuzzy-robot.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		66ED99BF195FF24000535321 /* Cocoa.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Cocoa.framework; path = System/Library/Frameworks/Cocoa.framework; sourceTree = SDKROOT; };
 		66ED99C2195FF24000535321 /* AppKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AppKit.framework; path = System/Library/Frameworks/AppKit.framework; sourceTree = SDKROOT; };
@@ -105,6 +116,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				66537E671968135B00EE5CA7 /* libxml2.2.dylib in Frameworks */,
 				66ED9A21195FF6BB00535321 /* Social.framework in Frameworks */,
 				66ED9A1F195FF6AF00535321 /* Accounts.framework in Frameworks */,
 				66ED99C0195FF24000535321 /* Cocoa.framework in Frameworks */,
@@ -123,9 +135,31 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		66537E5B1968134E00EE5CA7 /* Hpple */ = {
+			isa = PBXGroup;
+			children = (
+				66537E5C1968134E00EE5CA7 /* TFHpple.h */,
+				66537E5D1968134E00EE5CA7 /* TFHpple.m */,
+				66537E5E1968134E00EE5CA7 /* TFHppleElement.h */,
+				66537E5F1968134E00EE5CA7 /* TFHppleElement.m */,
+				66537E601968134E00EE5CA7 /* XPath */,
+			);
+			path = Hpple;
+			sourceTree = "<group>";
+		};
+		66537E601968134E00EE5CA7 /* XPath */ = {
+			isa = PBXGroup;
+			children = (
+				66537E611968134E00EE5CA7 /* XPathQuery.h */,
+				66537E621968134E00EE5CA7 /* XPathQuery.m */,
+			);
+			path = XPath;
+			sourceTree = "<group>";
+		};
 		66ED99B3195FF23F00535321 = {
 			isa = PBXGroup;
 			children = (
+				66537E5B1968134E00EE5CA7 /* Hpple */,
 				66ED99F3195FF68C00535321 /* STTwitter */,
 				66ED99C5195FF24000535321 /* fuzzy-robot */,
 				66ED99E3195FF24000535321 /* fuzzy-robotTests */,
@@ -146,6 +180,7 @@
 		66ED99BE195FF24000535321 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				66537E661968135B00EE5CA7 /* libxml2.2.dylib */,
 				66ED9A20195FF6BB00535321 /* Social.framework */,
 				66ED9A1E195FF6AF00535321 /* Accounts.framework */,
 				66ED99BF195FF24000535321 /* Cocoa.framework */,
@@ -357,11 +392,14 @@
 				66ED9A1D195FF68C00535321 /* STHTTPRequest.m in Sources */,
 				66ED9A1C195FF68C00535321 /* JSONSyntaxHighlight.m in Sources */,
 				66ED99CC195FF24000535321 /* main.m in Sources */,
+				66537E641968134E00EE5CA7 /* TFHppleElement.m in Sources */,
 				66ED9A1A195FF68C00535321 /* STTwitterOSRequest.m in Sources */,
 				66ED9A18195FF68C00535321 /* STTwitterOAuth.m in Sources */,
 				66ED9A19195FF68C00535321 /* STTwitterOS.m in Sources */,
 				66ED9A12195FF68C00535321 /* NSError+STTwitter.m in Sources */,
 				66ED9A11195FF68C00535321 /* NSDateFormatter+STTwitter.m in Sources */,
+				66537E631968134E00EE5CA7 /* TFHpple.m in Sources */,
+				66537E651968134E00EE5CA7 /* XPathQuery.m in Sources */,
 				66ED9A17195FF68C00535321 /* STTwitterHTML.m in Sources */,
 				66ED9A14195FF68C00535321 /* STHTTPRequest+STTwitter.m in Sources */,
 				66ED9A1B195FF68C00535321 /* BAVPlistNode.m in Sources */,
@@ -501,6 +539,11 @@
 				COMBINE_HIDPI_IMAGES = YES;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "fuzzy-robot/fuzzy-robot-Prefix.pch";
+				HEADER_SEARCH_PATHS = (
+					"$(inherited)",
+					/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include,
+					"$(SDKROOT)/usr/include/libxml2",
+				);
 				INFOPLIST_FILE = "fuzzy-robot/fuzzy-robot-Info.plist";
 				MACOSX_DEPLOYMENT_TARGET = 10.8;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -515,6 +558,11 @@
 				COMBINE_HIDPI_IMAGES = YES;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "fuzzy-robot/fuzzy-robot-Prefix.pch";
+				HEADER_SEARCH_PATHS = (
+					"$(inherited)",
+					/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include,
+					"$(SDKROOT)/usr/include/libxml2",
+				);
 				INFOPLIST_FILE = "fuzzy-robot/fuzzy-robot-Info.plist";
 				MACOSX_DEPLOYMENT_TARGET = 10.8;
 				PRODUCT_NAME = "$(TARGET_NAME)";

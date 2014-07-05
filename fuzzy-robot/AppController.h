@@ -28,10 +28,13 @@
     IBOutlet NSTextField *unfavoritedUsersID;
 }
 
-@property (nonatomic, retain) STTwitterAPI *twitter;
 @property (nonatomic, assign) id <STAuthenticationVCDelegate> delegate;
-@property (nonatomic, retain) NSArray *osxAccounts;
+@property (nonatomic, strong) STTwitterAPI *twitter;
+@property (nonatomic, strong) NSArray *osxAccounts;
 @property (nonatomic, strong) ACAccountStore *accountStore;
+@property (nonatomic, strong) NSArray *unfavorittedUserList;
+@property (nonatomic, strong) NSString *userID;
+@property (nonatomic) NSInteger favourites_count;
 
 - (IBAction)twitterLogin:(id)sender;
 - (IBAction)checkOutFolder:(id)sender;

@@ -65,6 +65,13 @@
 
 - (IBAction)downloadTwitterObject:(id)sender
 {
+    // GET statuses/user_timeline
+    [self.twitter getAccountVerifyCredentialsWithSuccessBlock:^(NSDictionary *account) {
+        self.favourites_count = [[account valueForKey:@"favourites_count"] integerValue];
+    } errorBlock:^(NSError *error) {
+        self.favourites_count = 200;
+    }];
+
     @autoreleasepool {
     // TODO:  [downloadTwitterObject setTitle:@"멈춰"];
     [self downloadTwitterObjectRunner:nil];
@@ -73,73 +80,19 @@
 
 - (IBAction)checkUnfavoriteUserId:(id)sender
 {
+    NSString *string = unfavoritedUsersID.stringValue;
+    NSArray* list = [string componentsSeparatedByString:@"@"];
     
+    NSMutableArray *array = [[NSMutableArray alloc] init];
+    
+    for (NSString* user in list)
+        [array addObject:[user stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]]];
+    
+    self.unfavorittedUserList = array;
 }
-
-NSString *descriptionForTarget(NSDictionary *target) {
-    //NSString *timestamp = [target valueForKey:@"created_at"];
-    NSString *targetName = [target valueForKeyPath:@"user.screen_name"];
-    NSString *text = [target valueForKey:@"text"];
-    text = [text stringByReplacingOccurrencesOfString:@"\n" withString:@"\n                                    "];
-    NSString *favouritesCount = [target valueForKey:@"favorite_count"];
-    NSString *retweetsCount = [target valueForKey:@"retweet_count"];
-    NSString *idString = [target valueForKey:@"id_str"];
-    
-    return [NSString stringWithFormat:@"%@\t[F %@] [R %@]\t@%@\t%@", idString, favouritesCount, retweetsCount, targetName, text];
-}
-
-NSString *descriptionForFavorites(NSArray *favorites) {
-    
-    NSMutableString *ms = [NSMutableString string];
-    
-    NSUInteger numberOfFavorites = 0;
-    
-    for(NSDictionary *d in favorites) {
-        [ms appendString:@"----------\n"];
-        
-        NSString *timestamp = [d valueForKey:@"created_at"];
-        
-        for(NSDictionary *source in [d valueForKey:@"sources"]) {
-            NSString *sourceName = [source valueForKey:@"screen_name"];
-            
-            [ms appendFormat:@"%@ @%@ favorited:\n", timestamp, sourceName];
-        }
-        
-        NSArray *targets = [d valueForKey:@"targets"];
-        
-        numberOfFavorites += [targets count];
-        
-        for(NSDictionary *target in targets) {
-            
-            NSString *targetDescription = descriptionForTarget(target);
-            
-            [ms appendFormat:@"%@\n", targetDescription];
-        }
-        
-        
-    }
-    
-    return ms;
-}
-
-#if 0
-    // TODO: screen name
-    NSArray *favorites = [statues filteredArrayUsingPredicate:[NSPredicate predicateWithBlock:^BOOL(id evaluatedObject, NSDictionary *bindings) {
-        NSDictionary *d = (NSDictionary *)evaluatedObject;
-        return [[d valueForKey:@"action"] isEqualToString:@"favorite"];
-    }]];
-
-    NSString *timestamp = [d valueForKey:@"created_at"];
-    NSUInteger index = [array indexOfObject:max];
-
-    // 총 트윗, 한것, 남은것으로 시간 개수 표시:
-#endif
 
 - (void)downloadTwitterObjectRunner:(NSString*)maximumID
 {
-    NSString *tweetCount = @"200";
-    
-    
     void (^fetchTweets)(NSArray*) = ^(NSArray* favorites) {
         for (NSDictionary *dic in favorites) {
             @autoreleasepool {
@@ -197,17 +150,30 @@ NSString *descriptionForFavorites(NSArray *favorites) {
                 }
                 
                 
-                
+                for (NSString* userName in self.unfavorittedUserList)
+                {
+                    NSString *name = dic[@"screen_name"];
+                    if ([userName isEqualToString:name])
+                    {
+                        [self.twitter postFavoriteDestroyWithStatusID:dic[@"id"]
+                                                      includeEntities:@(YES)
+                                                         successBlock:^(NSDictionary *status) {
+                                                             NSLog(@"본 트윗은 이제 지워졌습니다. 후후 미쳐감");
+                                                         }
+                                                           errorBlock:nil];
+                    }
+                }
             }
         }
+        self.favourites_count -= favorites.count;
     };
     
     void (^fetchFavorite)(NSArray*) = ^(NSArray* statues) {
         // stop if final place reaches.
         // BUG_FIX: 그냥 막 0 개 들어오네?
-        if (statues.count != 0 && statues.count < [tweetCount integerValue])
+        if (self.favourites_count <= 0)
         {
-            NSLog(@"Finished!");
+            NSLog(@"FINISHED");
         }
         else
         {
@@ -224,7 +190,7 @@ NSString *descriptionForFavorites(NSArray *favorites) {
     
     [self.twitter getFavoritesListWithUserID:nil
                                   screenName:nil
-                                       count:tweetCount
+                                       count:@"200"
                                      sinceID:nil
                                        maxID:maximumID
                              includeEntities:@(YES)
@@ -261,6 +227,13 @@ NSString *descriptionForFavorites(NSArray *favorites) {
     [self.twitter verifyCredentialsWithSuccessBlock:^(NSString *username) {
         [loginStatus setStringValue:[NSString stringWithFormat:@"Access granted for %@", username]];
         [_delegate authenticationVC:self didChangeTwitterObject:_twitter]; // update username
+        
+        [self.twitter getAccountVerifyCredentialsWithSuccessBlock:^(NSDictionary *account) {
+            self.userID = account[@"id_str"];
+            self.favourites_count = [[account valueForKey:@"favourites_count"] integerValue];
+        } errorBlock:^(NSError *error) {
+        }];
+        
     } errorBlock:^(NSError *error) {
         [loginStatus setStringValue:[error localizedDescription]];
     }];
@@ -305,7 +278,6 @@ NSString *descriptionForFavorites(NSArray *favorites) {
     NSString* pictureFolder = [NSHomeDirectory() stringByAppendingPathComponent:@"Pictures/"];
     [outputFolder setStringValue:pictureFolder];
 }
-
 
 
 @end

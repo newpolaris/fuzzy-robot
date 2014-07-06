@@ -101,62 +101,63 @@
     self.unfavorittedUserList = array;
 }
 
-- (void)downloadTwitterObjectRunner:(NSString*)maximumID
+-(void)fetchTweets:(NSArray*)favorites
 {
-    void (^fetchTweets)(NSArray*) = ^(NSArray* favorites) {
-        for (NSDictionary *dic in favorites) {
-            @autoreleasepool {
-                NSDictionary *medias = dic[@"extended_entities"][@"media"];
-                NSDictionary *urls = dic[@"entities"][@"urls"];
-                
-                NSMutableArray *uriArr = [[NSMutableArray alloc] init];
-                NSMutableArray *fileArr = [[NSMutableArray alloc] init];
-                NSMutableArray *nameArr = [[NSMutableArray alloc] init];
-                
-                if (medias != nil)
+    for (NSDictionary *dic in favorites) {
+        @autoreleasepool {
+            NSDictionary *medias = dic[@"extended_entities"][@"media"];
+            NSDictionary *urls = dic[@"entities"][@"urls"];
+            
+            NSMutableArray *uriArr = [[NSMutableArray alloc] init];
+            NSMutableArray *fileArr = [[NSMutableArray alloc] init];
+            NSMutableArray *nameArr = [[NSMutableArray alloc] init];
+            
+            if (medias != nil)
+            {
+                for (NSDictionary *media in medias)
                 {
-                    for (NSDictionary *media in medias)
+                    NSURL *uri = [NSURL URLWithString:[media[@"media_url"] stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding]];
+                    NSURL *largeImageUri = [NSURL URLWithString:[NSString stringWithFormat:@"%@%@", uri, @":orig"]];
+                    
+                    [fileArr addObject:[uri lastPathComponent]];
+                    [uriArr addObject:largeImageUri];
+                    [nameArr addObject:dic[@"user"][@"screen_name"]];
+                }
+            }
+            else if (urls != nil)
+            {
+                for (NSDictionary *url in urls)
+                {
+                    NSString *uri = url[@"expanded_url"];
+                    if (uri == nil) continue;
+                    if ([uri rangeOfString:@"twitter.com"].length == 0) continue;
+                    
+                    NSURL *url = [NSURL URLWithString:[NSString stringWithFormat:@"%@", uri]];
+                    NSData *data = [NSData dataWithContentsOfURL:url options:NSDataReadingUncached error:nil];
+                    TFHpple *parser = [[TFHpple alloc] initWithHTMLData:data];
+                    NSArray *elements = [parser searchWithXPathQuery:@"//source[@class='source-mp4']"];
+                    
+                    for (TFHppleElement *link in elements)
                     {
-                        NSURL *uri = [NSURL URLWithString:[media[@"media_url"] stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding]];
-                        NSURL *largeImageUri = [NSURL URLWithString:[NSString stringWithFormat:@"%@%@", uri, @":orig"]];
+                        NSString *mp4link = [link objectForKey:@"video-src"];
+                        if (mp4link == nil) continue;
+                        NSURL *mp4uri = [NSURL URLWithString:[NSString stringWithFormat:@"%@", mp4link]];
                         
-                        [fileArr addObject:[uri lastPathComponent]];
-                        [uriArr addObject:largeImageUri];
+                        [fileArr addObject:[mp4uri lastPathComponent]];
+                        [uriArr addObject:mp4uri];
                         [nameArr addObject:dic[@"user"][@"screen_name"]];
                     }
                 }
-                else if (urls != nil)
-                {
-                    for (NSDictionary *url in urls)
-                    {
-                        NSString *uri = url[@"expanded_url"];
-                        if (uri == nil) continue;
-                        if ([uri rangeOfString:@"twitter.com"].length == 0) continue;
-
-                        NSURL *url = [NSURL URLWithString:[NSString stringWithFormat:@"%@", uri]];
-                        NSData *data = [NSData dataWithContentsOfURL:url options:NSDataReadingUncached error:nil];
-                        TFHpple *parser = [[TFHpple alloc] initWithHTMLData:data];
-                        NSArray *elements = [parser searchWithXPathQuery:@"//source[@class='source-mp4']"];
-                        
-                        for (TFHppleElement *link in elements)
-                        {
-                            NSString *mp4link = [link objectForKey:@"video-src"];
-                            if (mp4link == nil) continue;
-                            NSURL *mp4uri = [NSURL URLWithString:[NSString stringWithFormat:@"%@", mp4link]];
-                                             
-                            [fileArr addObject:[mp4uri lastPathComponent]];
-                            [uriArr addObject:mp4uri];
-                            [nameArr addObject:dic[@"user"][@"screen_name"]];
-                        }
-                    }
-                }
+            }
+            
+            if (uriArr.count == 0) continue;
+            
+            dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+                NSFileManager* fileManager = [[NSFileManager alloc] init];
                 
-                if (uriArr.count == 0) continue;
                 for (int i = 0; i < uriArr.count; i++)
                 {
                     @autoreleasepool {
-                        NSFileManager *fileManager = [NSFileManager defaultManager];
-                        
                         NSArray *dirComp = [NSArray arrayWithObjects:[outputFolder stringValue], nameArr[i], nil];
                         NSString *directory = [NSString pathWithComponents:dirComp];
                         
@@ -176,8 +177,12 @@
                             NSData *data = [NSData dataWithContentsOfURL:uri
                                                                  options:NSDataReadingUncached
                                                                    error:nil];
-                            [data writeToFile:path atomically:YES];
-                            NSLog(@"Saved: %@", fileArr[i]);
+                            if (![data writeToFile:path atomically:YES])
+                            {
+                                int i = 0;
+                            }
+                            [self updateStatusProcess:
+                             [NSString stringWithFormat:@"Saved: %@/%@", nameArr[i], fileArr[i]]];
                         }
                     }
                 }
@@ -186,56 +191,104 @@
                 if (content != nil)
                 {
                     NSString* file = [[fileArr[0] stringByDeletingPathExtension] stringByAppendingPathExtension:@"txt"];
-                    NSArray* componets = [NSArray arrayWithObjects:[outputFolder stringValue], file, nil];
+                    NSArray* componets = [NSArray arrayWithObjects:[outputFolder stringValue], nameArr[0], file, nil];
                     NSString* filePath = [NSString pathWithComponents:componets];
                     //save content to the documents directory
-                    [content writeToFile:filePath
-                              atomically:NO
-                                encoding:NSStringEncodingConversionAllowLossy
-                                   error:nil];
-                    
-                    NSLog(@"Saved: %@", file);
-                }
-                
-                for (NSString* userName in self.unfavorittedUserList)
-                {
-                    NSString *name = dic[@"user"][@"screen_name"];
-                    if (name == nil) continue;
-                    if ([userName isEqualToString:name])
-                    {
-                        [self.twitter postFavoriteDestroyWithStatusID:dic[@"id_str"]
-                                                      includeEntities:@(NO)
-                                                         successBlock:^(NSDictionary *status) {
-                                                             NSLog(@"본 트윗은 이제 지워졌습니다. %@", dic[@"id"]);
-                                                         }
-                                                           errorBlock:^(NSError *error) {
-                                                               NSLog(@"에러 났어여..%@", [error debugDescription]);
-                                                           }];
-                        break;
+                    if (![fileManager fileExistsAtPath:filePath]) {
+                        NSError *error;
+                        if (![content writeToFile:filePath
+                                  atomically:YES
+                                    encoding:NSUTF8StringEncoding
+                                       error:&error])
+                        {
+                            NSLog(@"ERROR SAVE TEXT:%@", [error debugDescription]);
+                        }
+                            
+                        
+                        [self updateStatusProcess:
+                            [NSString stringWithFormat:@"Saved: %@/%@", nameArr[0], file]];
                     }
+                }
+            });
+            
+            for (NSString* userName in self.unfavorittedUserList)
+            {
+                NSString *name = dic[@"user"][@"screen_name"];
+                if (name == nil) continue;
+                if ([userName isEqualToString:name])
+                {
+                    [self.twitter postFavoriteDestroyWithStatusID:dic[@"id_str"]
+                                                  includeEntities:@(NO)
+                                                     successBlock:^(NSDictionary *status) {
+                                                         [self updateStatusProcess:
+                                                          [NSString stringWithFormat:@"%@ 트윗은 이제 지워졌습니다.", dic[@"id"]]];
+                                                     }
+                                                       errorBlock:^(NSError *error) {
+                                                           NSLog(@"에러 났어여..%@", [error debugDescription]);
+                                                       }];
+                    break;
                 }
             }
         }
-        self.favourites_count -= favorites.count;
-        NSLog(@"Remain: %ld", (long)self.favourites_count);
-    };
+    }
     
-    void (^fetchFavorite)(NSArray*) = ^(NSArray* statues) {
+    self.favourites_count -= favorites.count;
+    [self updateStatusSummary:[NSString stringWithFormat:@"Remain: %ld", (long)self.favourites_count]];
+};
+
+- (void)updateStatusProcess:(NSString*)string
+{
+    dispatch_async(dispatch_get_main_queue(), ^{
+        [[statusProcess textStorage] beginEditing];
+        [[[statusProcess textStorage] mutableString] appendString:string];
+        [[[statusProcess textStorage] mutableString] appendString:@"\n"];
+        [[statusProcess textStorage] endEditing];
+        
+        NSRange range;
+        range = NSMakeRange ([[statusProcess string] length], 0);
+        [statusProcess scrollRangeToVisible:range];
+    });
+}
+
+- (void)updateStatusSummaryWithoutSync:(NSString*)string
+{
+    [[statusSummary textStorage] beginEditing];
+    [[[statusSummary textStorage] mutableString] appendString:string];
+    [[[statusSummary textStorage] mutableString] appendString:@"\n"];
+    [[statusSummary textStorage] endEditing];
+    
+    NSRange range;
+    range = NSMakeRange ([[statusSummary string] length], 0);
+    [statusSummary scrollRangeToVisible: range];
+}
+
+- (void)updateStatusSummary:(NSString*)string
+{
+    dispatch_async(dispatch_get_main_queue(), ^{
+        [self updateStatusSummaryWithoutSync:string];
+    });
+}
+
+- (void)downloadTwitterObjectRunner:(NSString*)maximumID
+{
+    void(^fetchFavorite)(NSArray*) = ^(NSArray* statues){
         // stop if final place reaches.
         // BUG_FIX: 그냥 막 0 개 들어오네?
         if (self.favourites_count <= 0)
         {
-            NSLog(@"FINISHED");
+            [self updateStatusSummary:@"다 끝났습니다"];
         }
         else
         {
-            fetchTweets(statues);
-            
-            NSArray *ids = [statues valueForKeyPath:@"id"];
-            NSString *maxID = [[ids valueForKeyPath:@"@max.intValue"] stringValue];
-            
-            dispatch_async(dispatch_get_main_queue(), ^{
-                [self downloadTwitterObjectRunner:maxID];
+            dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_BACKGROUND, 0), ^{
+                [self fetchTweets:statues];
+                
+                NSArray *ids = [statues valueForKeyPath:@"id"];
+                NSString *maxID = [[ids valueForKeyPath:@"@max.intValue"] stringValue];
+                
+                dispatch_async(dispatch_get_main_queue(), ^{
+                    [self downloadTwitterObjectRunner:maxID];
+                });
             });
         }
     };
@@ -251,7 +304,7 @@
                                       NSLog(@"%@", [error debugDescription]);
                                       if ([error code] == 88)
                                       {
-                                          NSLog(@"API Limit에 걸렸습니다. 5분 후에 재시도 합니다.");
+                                          [self updateStatusSummaryWithoutSync:@"API Limit에 걸렸습니다. 5분 후에 재시도 합니다."];
                                           dispatch_after(dispatch_time(DISPATCH_TIME_NOW,
                                                                        (int64_t)(60 * 5 * NSEC_PER_SEC)),
                                                          dispatch_get_main_queue(), ^{
@@ -327,7 +380,7 @@
                                            options:nil
                                         completion:loginCheck];
     
-    NSString* pictureFolder = [NSHomeDirectory() stringByAppendingPathComponent:@"Pictures/"];
+    NSString* pictureFolder = [NSHomeDirectory() stringByAppendingPathComponent:@"Pictures/Twitter"];
     [outputFolder setStringValue:pictureFolder];
 }
 

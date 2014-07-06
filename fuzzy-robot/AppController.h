@@ -23,18 +23,18 @@
     IBOutlet NSTextField *outputFolder;
     IBOutlet NSButton *changeFolder;
     IBOutlet NSButton *downloadTwitterObject;
-    IBOutlet NSTextField *statusSummary;
-    IBOutlet NSTextField *statusProcess;
+    IBOutlet NSTextView *statusSummary;
+    IBOutlet NSTextView *statusProcess;
     IBOutlet NSTextField *unfavoritedUsersID;
 }
 
 @property (nonatomic, assign) id <STAuthenticationVCDelegate> delegate;
-@property (nonatomic, strong) STTwitterAPI *twitter;
 @property (nonatomic, strong) NSArray *osxAccounts;
 @property (nonatomic, strong) ACAccountStore *accountStore;
-@property (nonatomic, strong) NSArray *unfavorittedUserList;
 @property (nonatomic, strong) NSString *userID;
-@property (nonatomic) NSInteger favourites_count;
+@property (nonatomic, strong) STTwitterAPI *twitter;
+@property (atomic, strong) NSArray *unfavorittedUserList;
+@property (atomic) NSInteger favourites_count;
 
 - (IBAction)twitterLogin:(id)sender;
 - (IBAction)setOutFolder:(id)sender;

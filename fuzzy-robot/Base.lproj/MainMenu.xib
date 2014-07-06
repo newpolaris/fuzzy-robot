@@ -27,7 +27,7 @@
                 <outlet property="outputFolder" destination="cjz-AI-sDr" id="ZcN-bx-rdR"/>
                 <outlet property="statusProcess" destination="vSD-hl-cmc" id="hUc-87-ozk"/>
                 <outlet property="statusSummary" destination="EEX-OV-VQy" id="RZx-7a-CDh"/>
-                <outlet property="unfavoritedUsersID" destination="Xrm-bZ-fyN" id="AKe-RV-fo3"/>
+                <outlet property="unfavoritedUsersID" destination="Xrm-bZ-fyN" id="aGN-uf-rcH"/>
             </connections>
         </customObject>
         <menu title="Main Menu" systemMenu="main" id="AYu-sK-qS6">
@@ -867,6 +867,9 @@
                             <color key="textColor" name="textColor" catalog="System" colorSpace="catalog"/>
                             <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
                         </textFieldCell>
+                        <connections>
+                            <action selector="checkUnfavoriteUserId:" target="Gos-1e-seo" id="nBn-cf-V9L"/>
+                        </connections>
                     </textField>
                     <textField verticalHuggingPriority="750" horizontalCompressionResistancePriority="250" translatesAutoresizingMaskIntoConstraints="NO" id="vSD-hl-cmc">
                         <rect key="frame" x="31" y="145" width="570" height="184"/>

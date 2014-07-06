@@ -15,7 +15,7 @@
     [self twitterLoginTry];
 }
 
-- (IBAction)checkOutFolder:(id)sender {
+- (void)checkOutFolder {
     BOOL isDir;
     NSString* folderName = [outputFolder stringValue];
     NSFileManager *fm = [NSFileManager defaultManager];
@@ -65,6 +65,8 @@
 
 - (IBAction)downloadTwitterObject:(id)sender
 {
+    [self checkOutFolder];
+    [self checkUnfavoriteUserId];
     // GET statuses/user_timeline
     [self.twitter getAccountVerifyCredentialsWithSuccessBlock:^(NSDictionary *account) {
         self.favourites_count = [[account valueForKey:@"favourites_count"] integerValue];
@@ -78,7 +80,7 @@
     }
 }
 
-- (IBAction)checkUnfavoriteUserId:(id)sender
+- (void)checkUnfavoriteUserId
 {
     NSString *string = unfavoritedUsersID.stringValue;
     NSArray* list = [string componentsSeparatedByString:@"@"];
@@ -86,7 +88,15 @@
     NSMutableArray *array = [[NSMutableArray alloc] init];
     
     for (NSString* user in list)
-        [array addObject:[user stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]]];
+    {
+       if([user length] == 0)
+           continue;
+    
+       if(![[user stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]] length]) {
+           continue;
+       }
+       [array addObject:[user stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]]];
+    }
     
     self.unfavorittedUserList = array;
 }
@@ -100,6 +110,7 @@
                 NSDictionary *urls = dic[@"entities"][@"urls"];
                 
                 NSMutableArray *uriArr = [[NSMutableArray alloc] init];
+                NSMutableArray *fileArr = [[NSMutableArray alloc] init];
                 NSMutableArray *nameArr = [[NSMutableArray alloc] init];
                 
                 if (medias != nil)
@@ -109,8 +120,9 @@
                         NSURL *uri = [NSURL URLWithString:[media[@"media_url"] stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding]];
                         NSURL *largeImageUri = [NSURL URLWithString:[NSString stringWithFormat:@"%@%@", uri, @":orig"]];
                         
-                        [nameArr addObject:[uri lastPathComponent]];
+                        [fileArr addObject:[uri lastPathComponent]];
                         [uriArr addObject:largeImageUri];
+                        [nameArr addObject:dic[@"user"][@"screen_name"]];
                     }
                 }
                 else if (urls != nil)
@@ -132,8 +144,9 @@
                             if (mp4link == nil) continue;
                             NSURL *mp4uri = [NSURL URLWithString:[NSString stringWithFormat:@"%@", mp4link]];
                                              
-                            [nameArr addObject:[mp4uri lastPathComponent]];
+                            [fileArr addObject:[mp4uri lastPathComponent]];
                             [uriArr addObject:mp4uri];
+                            [nameArr addObject:dic[@"user"][@"screen_name"]];
                         }
                     }
                 }
@@ -142,10 +155,30 @@
                 for (int i = 0; i < uriArr.count; i++)
                 {
                     @autoreleasepool {
-                        NSString *name = nameArr[i];
-                        NSURL *uri = uriArr[i];
-                        NSData *data = [NSData dataWithContentsOfURL:uri options:NSDataReadingUncached error:nil];
-                        [data writeToFile:name atomically:YES];
+                        NSFileManager *fileManager = [NSFileManager defaultManager];
+                        
+                        NSArray *dirComp = [NSArray arrayWithObjects:[outputFolder stringValue], nameArr[i], nil];
+                        NSString *directory = [NSString pathWithComponents:dirComp];
+                        
+                        BOOL isDir;
+                        if(![fileManager fileExistsAtPath:directory isDirectory:&isDir])
+                            if(![fileManager createDirectoryAtPath:directory
+                                       withIntermediateDirectories:YES
+                                                        attributes:nil
+                                                             error:NULL])
+                                NSLog(@"Error: Create folder failed %@", directory);
+                        
+                        NSArray *components = [NSArray arrayWithObjects:[outputFolder stringValue], nameArr[i], fileArr[i], nil];
+                        NSString *path = [NSString pathWithComponents:components];
+                        
+                        if (![fileManager fileExistsAtPath:path]) {
+                            NSURL *uri = uriArr[i];
+                            NSData *data = [NSData dataWithContentsOfURL:uri
+                                                                 options:NSDataReadingUncached
+                                                                   error:nil];
+                            [data writeToFile:path atomically:YES];
+                            NSLog(@"Saved: %@", fileArr[i]);
+                        }
                     }
                 }
                 
@@ -166,6 +199,7 @@
             }
         }
         self.favourites_count -= favorites.count;
+        NSLog(@"Remain: %ld", (long)self.favourites_count);
     };
     
     void (^fetchFavorite)(NSArray*) = ^(NSArray* statues) {

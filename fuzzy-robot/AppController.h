@@ -37,12 +37,12 @@
 @property (nonatomic) NSInteger favourites_count;
 
 - (IBAction)twitterLogin:(id)sender;
-- (IBAction)checkOutFolder:(id)sender;
 - (IBAction)setOutFolder:(id)sender;
 - (IBAction)openFolder:(id)sender;
 - (IBAction)downloadTwitterObject:(id)sender;
-- (IBAction)checkUnfavoriteUserId:(id)sender;
 
 - (void)twitterLoginTry;
+- (void)checkUnfavoriteUserId;
+- (void)checkOutFolder;
 
 @end

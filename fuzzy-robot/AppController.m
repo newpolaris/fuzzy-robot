@@ -182,18 +182,36 @@
                     }
                 }
                 
+                NSString *content = dic[@"text"];
+                if (content != nil)
+                {
+                    NSString* file = [[fileArr[0] stringByDeletingPathExtension] stringByAppendingPathExtension:@"txt"];
+                    NSArray* componets = [NSArray arrayWithObjects:[outputFolder stringValue], file, nil];
+                    NSString* filePath = [NSString pathWithComponents:componets];
+                    //save content to the documents directory
+                    [content writeToFile:filePath
+                              atomically:NO
+                                encoding:NSStringEncodingConversionAllowLossy
+                                   error:nil];
+                    
+                    NSLog(@"Saved: %@", file);
+                }
                 
                 for (NSString* userName in self.unfavorittedUserList)
                 {
-                    NSString *name = dic[@"screen_name"];
+                    NSString *name = dic[@"user"][@"screen_name"];
+                    if (name == nil) continue;
                     if ([userName isEqualToString:name])
                     {
-                        [self.twitter postFavoriteDestroyWithStatusID:dic[@"id"]
-                                                      includeEntities:@(YES)
+                        [self.twitter postFavoriteDestroyWithStatusID:dic[@"id_str"]
+                                                      includeEntities:@(NO)
                                                          successBlock:^(NSDictionary *status) {
-                                                             NSLog(@"본 트윗은 이제 지워졌습니다. 후후 미쳐감");
+                                                             NSLog(@"본 트윗은 이제 지워졌습니다. %@", dic[@"id"]);
                                                          }
-                                                           errorBlock:nil];
+                                                           errorBlock:^(NSError *error) {
+                                                               NSLog(@"에러 났어여..%@", [error debugDescription]);
+                                                           }];
+                        break;
                     }
                 }
             }

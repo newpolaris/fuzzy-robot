@@ -103,7 +103,10 @@
 
 -(void)fetchTweets:(NSArray*)favorites
 {
-    for (NSDictionary *dic in favorites) {
+    if ([favorites count] == 0) return;
+    
+    dispatch_apply([favorites count], dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^(size_t idx) {
+        NSDictionary *dic = [favorites objectAtIndex: idx];
         @autoreleasepool {
             NSDictionary *medias = dic[@"extended_entities"][@"media"];
             NSDictionary *urls = dic[@"entities"][@"urls"];
@@ -150,66 +153,64 @@
                 }
             }
             
-            if (uriArr.count == 0) continue;
+            if (uriArr.count == 0) return;
             
-            dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
-                NSFileManager* fileManager = [[NSFileManager alloc] init];
-                
-                for (int i = 0; i < uriArr.count; i++)
-                {
-                    @autoreleasepool {
-                        NSArray *dirComp = [NSArray arrayWithObjects:[outputFolder stringValue], nameArr[i], nil];
-                        NSString *directory = [NSString pathWithComponents:dirComp];
-                        
-                        BOOL isDir;
-                        if(![fileManager fileExistsAtPath:directory isDirectory:&isDir])
-                            if(![fileManager createDirectoryAtPath:directory
-                                       withIntermediateDirectories:YES
-                                                        attributes:nil
-                                                             error:NULL])
-                                NSLog(@"Error: Create folder failed %@", directory);
-                        
-                        NSArray *components = [NSArray arrayWithObjects:[outputFolder stringValue], nameArr[i], fileArr[i], nil];
-                        NSString *path = [NSString pathWithComponents:components];
-                        
-                        if (![fileManager fileExistsAtPath:path]) {
-                            NSURL *uri = uriArr[i];
-                            NSData *data = [NSData dataWithContentsOfURL:uri
-                                                                 options:NSDataReadingUncached
-                                                                   error:nil];
-                            if (![data writeToFile:path atomically:YES])
-                            {
-                                int i = 0;
-                            }
-                            [self updateStatusProcess:
-                             [NSString stringWithFormat:@"Saved: %@/%@", nameArr[i], fileArr[i]]];
-                        }
+            NSFileManager* fileManager = [[NSFileManager alloc] init];
+            
+            for (int i = 0; i < uriArr.count; i++)
+            {
+                @autoreleasepool {
+                    NSArray *dirComp = [NSArray arrayWithObjects:[outputFolder stringValue], nameArr[i], nil];
+                    NSString *directory = [NSString pathWithComponents:dirComp];
+                    
+                    BOOL isDir;
+                    if(![fileManager fileExistsAtPath:directory isDirectory:&isDir])
+                        if(![fileManager createDirectoryAtPath:directory
+                                   withIntermediateDirectories:YES
+                                                    attributes:nil
+                                                         error:NULL])
+                            NSLog(@"Error: Create folder failed %@", directory);
+                    
+                    NSArray *components = [NSArray arrayWithObjects:[outputFolder stringValue], nameArr[i], fileArr[i], nil];
+                    NSString *path = [NSString pathWithComponents:components];
+                    
+                    if (![fileManager fileExistsAtPath:path]) {
+                        NSURL *uri = uriArr[i];
+                        NSData *data = [NSData dataWithContentsOfURL:uri
+                                                             options:NSDataReadingUncached
+                                                               error:nil];
+                        [data writeToFile:path atomically:YES];
+                        [self updateStatusProcess:[NSString stringWithFormat:@"Saved: %@/%@", nameArr[i], fileArr[i]]];
+                    }
+                    else
+                    {
+                        [self updateStatusProcess:[NSString stringWithFormat:@"파일이 이미 존재함: %@/%@", nameArr[i], fileArr[i]]];
                     }
                 }
-                
-                NSString *content = dic[@"text"];
-                if (content != nil)
-                {
-                    NSString* file = [[fileArr[0] stringByDeletingPathExtension] stringByAppendingPathExtension:@"txt"];
-                    NSArray* componets = [NSArray arrayWithObjects:[outputFolder stringValue], nameArr[0], file, nil];
-                    NSString* filePath = [NSString pathWithComponents:componets];
-                    //save content to the documents directory
-                    if (![fileManager fileExistsAtPath:filePath]) {
-                        NSError *error;
-                        if (![content writeToFile:filePath
-                                  atomically:YES
-                                    encoding:NSUTF8StringEncoding
-                                       error:&error])
-                        {
-                            NSLog(@"ERROR SAVE TEXT:%@", [error debugDescription]);
-                        }
-                            
-                        
-                        [self updateStatusProcess:
-                            [NSString stringWithFormat:@"Saved: %@/%@", nameArr[0], file]];
+            }
+            
+            NSString *content = dic[@"text"];
+            if (content != nil)
+            {
+                NSString* file = [[fileArr[0] stringByDeletingPathExtension] stringByAppendingPathExtension:@"txt"];
+                NSArray* componets = [NSArray arrayWithObjects:[outputFolder stringValue], nameArr[0], file, nil];
+                NSString* filePath = [NSString pathWithComponents:componets];
+                //save content to the documents directory
+                if (![fileManager fileExistsAtPath:filePath]) {
+                    NSError *error;
+                    if (![content writeToFile:filePath
+                                   atomically:YES
+                                     encoding:NSUTF8StringEncoding
+                                        error:&error])
+                    {
+                        NSLog(@"ERROR SAVE TEXT:%@", [error debugDescription]);
                     }
+                    
+                    
+                    [self updateStatusProcess:
+                     [NSString stringWithFormat:@"Saved: %@/%@", nameArr[0], file]];
                 }
-            });
+            }
             
             for (NSString* userName in self.unfavorittedUserList)
             {
@@ -217,20 +218,22 @@
                 if (name == nil) continue;
                 if ([userName isEqualToString:name])
                 {
-                    [self.twitter postFavoriteDestroyWithStatusID:dic[@"id_str"]
-                                                  includeEntities:@(NO)
-                                                     successBlock:^(NSDictionary *status) {
-                                                         [self updateStatusProcess:
-                                                          [NSString stringWithFormat:@"%@ 트윗은 이제 지워졌습니다.", dic[@"id"]]];
-                                                     }
-                                                       errorBlock:^(NSError *error) {
-                                                           NSLog(@"에러 났어여..%@", [error debugDescription]);
-                                                       }];
+                    dispatch_async(dispatch_get_main_queue(), ^{
+                        [self.twitter postFavoriteDestroyWithStatusID:dic[@"id_str"]
+                                                      includeEntities:@(NO)
+                                                         successBlock:^(NSDictionary *status) {
+                                                             [self updateStatusProcess:
+                                                              [NSString stringWithFormat:@"%@ 트윗은 이제 지워졌습니다.", dic[@"id"]]];
+                                                         }
+                                                           errorBlock:^(NSError *error) {
+                                                               NSLog(@"에러 났어여..%@", [error debugDescription]);
+                                                           }];
+                    });
                     break;
                 }
             }
         }
-    }
+    });
     
     self.favourites_count -= favorites.count;
     [self updateStatusSummary:[NSString stringWithFormat:@"Remain: %ld", (long)self.favourites_count]];
@@ -280,14 +283,13 @@
         }
         else
         {
-            dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_BACKGROUND, 0), ^{
+            dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
                 [self fetchTweets:statues];
                 
                 NSArray *ids = [statues valueForKeyPath:@"id"];
-                NSString *maxID = [[ids valueForKeyPath:@"@max.intValue"] stringValue];
-                
+                NSString* str = [[ids lastObject] stringValue];
                 dispatch_async(dispatch_get_main_queue(), ^{
-                    [self downloadTwitterObjectRunner:maxID];
+                    [self downloadTwitterObjectRunner:str];
                 });
             });
         }
@@ -304,9 +306,11 @@
                                       NSLog(@"%@", [error debugDescription]);
                                       if ([error code] == 88)
                                       {
-                                          [self updateStatusSummaryWithoutSync:@"API Limit에 걸렸습니다. 5분 후에 재시도 합니다."];
+                                          [self updateStatusSummaryWithoutSync:
+                                            [NSString stringWithFormat:@"Limit에 걸렸습니다. 1분 후에 재시도 합니다.\n %@",
+                                             [error debugDescription]]];
                                           dispatch_after(dispatch_time(DISPATCH_TIME_NOW,
-                                                                       (int64_t)(60 * 5 * NSEC_PER_SEC)),
+                                                                       (int64_t)(60 * 1 * NSEC_PER_SEC)),
                                                          dispatch_get_main_queue(), ^{
                                                              [self downloadTwitterObjectRunner:maximumID];
                                                          });
@@ -382,6 +386,8 @@
     
     NSString* pictureFolder = [NSHomeDirectory() stringByAppendingPathComponent:@"Pictures/Twitter"];
     [outputFolder setStringValue:pictureFolder];
+    [statusProcess setContinuousSpellCheckingEnabled:NO];
+    [statusSummary setContinuousSpellCheckingEnabled:NO];
 }
 
 

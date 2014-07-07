@@ -71,10 +71,10 @@
       </AdditionalOptions>
    </LaunchAction>
    <ProfileAction
-      shouldUseLaunchSchemeArgsEnv = "YES"
+      shouldUseLaunchSchemeArgsEnv = "NO"
       savedToolIdentifier = ""
       useCustomWorkingDirectory = "NO"
-      buildConfiguration = "Release"
+      buildConfiguration = "Debug"
       debugDocumentVersioning = "YES">
       <BuildableProductRunnable>
          <BuildableReference
@@ -85,6 +85,23 @@
             ReferencedContainer = "container:fuzzy-robot.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
+      <EnvironmentVariables>
+         <EnvironmentVariable
+            key = "NSDebugEnabled"
+            value = "YES"
+            isEnabled = "YES">
+         </EnvironmentVariable>
+         <EnvironmentVariable
+            key = "NSAutoreleaseFreedObjectCheckEnabled"
+            value = "YES"
+            isEnabled = "YES">
+         </EnvironmentVariable>
+         <EnvironmentVariable
+            key = "NSZombieEnabled"
+            value = "YES"
+            isEnabled = "YES">
+         </EnvironmentVariable>
+      </EnvironmentVariables>
    </ProfileAction>
    <AnalyzeAction
       buildConfiguration = "Debug">

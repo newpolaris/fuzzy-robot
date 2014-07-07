@@ -211,19 +211,21 @@
                      [NSString stringWithFormat:@"Saved: %@/%@", nameArr[0], file]];
                 }
             }
-            
+        
             for (NSString* userName in self.unfavorittedUserList)
             {
                 NSString *name = dic[@"user"][@"screen_name"];
                 if (name == nil) continue;
                 if ([userName isEqualToString:name])
                 {
+                    NSString *id_str = dic[@"id_str"];
+                    NSString *text = [NSString stringWithFormat:@"%@ 트윗은 이제 지워졌습니다.", id_str];
+                    
                     dispatch_async(dispatch_get_main_queue(), ^{
-                        [self.twitter postFavoriteDestroyWithStatusID:dic[@"id_str"]
+                        [self.twitter postFavoriteDestroyWithStatusID:id_str
                                                       includeEntities:@(NO)
                                                          successBlock:^(NSDictionary *status) {
-                                                             [self updateStatusProcess:
-                                                              [NSString stringWithFormat:@"%@ 트윗은 이제 지워졌습니다.", dic[@"id"]]];
+                                                             [self updateStatusProcess:text]                                          ;
                                                          }
                                                            errorBlock:^(NSError *error) {
                                                                NSLog(@"에러 났어여..%@", [error debugDescription]);

@@ -844,7 +844,7 @@
                             <font key="font" size="13" name="AppleSDGothicNeo-Regular"/>
                         </buttonCell>
                     </button>
-                    <textField verticalHuggingPriority="750" setsMaxLayoutWidthAtFirstLayout="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Xrm-bZ-fyN">
+                    <textField verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="Xrm-bZ-fyN">
                         <rect key="frame" x="29" y="32" width="572" height="80"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                         <constraints>
@@ -888,10 +888,10 @@
                                     <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                     <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                     <size key="minSize" width="555" height="175"/>
-                                    <size key="maxSize" width="555" height="10000000"/>
+                                    <size key="maxSize" width="572" height="10000000"/>
                                     <color key="insertionPointColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
                                     <size key="minSize" width="555" height="175"/>
-                                    <size key="maxSize" width="555" height="10000000"/>
+                                    <size key="maxSize" width="572" height="10000000"/>
                                 </textView>
                             </subviews>
                             <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
@@ -916,11 +916,11 @@
                                     <rect key="frame" x="0.0" y="0.0" width="561" height="67"/>
                                     <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                     <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                                    <size key="minSize" width="229" height="67"/>
-                                    <size key="maxSize" width="571" height="10000000"/>
+                                    <size key="minSize" width="555" height="67"/>
+                                    <size key="maxSize" width="578" height="10000000"/>
                                     <color key="insertionPointColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
-                                    <size key="minSize" width="229" height="67"/>
-                                    <size key="maxSize" width="571" height="10000000"/>
+                                    <size key="minSize" width="555" height="67"/>
+                                    <size key="maxSize" width="578" height="10000000"/>
                                 </textView>
                             </subviews>
                             <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
